@@ -1,0 +1,26 @@
+from aiogram import Bot,Dispatcher,types,F
+from aiogram.filters import Command
+import asyncio
+TOKEN = "ТОКЕН БОТА" #поставьте токен сюда и можете проверить работу бота
+bot = Bot(TOKEN)
+dis = Dispatcher()
+@dis.message()
+async def main(message: types.Message):
+    iscommand = False
+    stroka = ""
+    if message.content_type == "text":
+        if message.text.startswith("/"):
+            iscommand = True
+            if message.text == "/start":
+                stroka += f"Привет {message.from_user.full_name}, это тестовый эхо бот от Kir1ll_K.. Напишите любое сообщение и бот его отправит обратно"
+            elif message.text == "/help":
+                stroka += f"Просто отправьте сообщение и бот его повторит)"
+            else:
+                stroka += "Извините я незнаю такую комманду"
+    if iscommand == False:
+        await bot.copy_message(message.chat.id,message.chat.id,message.message_id)
+    else:
+        await bot.send_message(message.chat.id,stroka)
+async def pol():
+    await dis.start_polling(bot)
+asyncio.run(pol())
